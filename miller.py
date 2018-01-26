@@ -24,5 +24,5 @@ def miller(bot, event, *args):
     if "keilbasa" in question:
         yield from bot.coro_send_message(
             event.conv,
-            _("All I know is that he eats is every chance he gets").format(
+            _("All I know is that he eats it every chance he gets").format(
                 event.user.full_name, 'yay'))
