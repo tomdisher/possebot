@@ -43,4 +43,3 @@ def meeklepic(bot, event, *args):
 
 
 
-
