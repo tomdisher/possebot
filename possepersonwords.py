@@ -38,7 +38,7 @@ def miller(bot, event, *args):
             _(word).format(
                 event.user.full_name, 'yay'))
 
-    if "keilbasa" in question:
+    if "keilbasa" or "kielbasa" in question.lower():
         words = content['keilbasa']
         word = random_word(words)
         yield from bot.coro_send_message(
