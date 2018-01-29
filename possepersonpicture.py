@@ -5,8 +5,10 @@ plugin to return random meekle image
 import plugins
 import urllib.request
 import os
+import base64
 import hangups
 import logging
+from bs4 import BeautifulSoup
 from fuzzywuzzy import process
 
 logger = logging.getLogger(__name__)
@@ -19,15 +21,18 @@ def _initialise(bot):
     plugins.register_user_command(["possepic"])
     
 def possepic(bot, event, *args):
+    site_url = bot.get_config_option('posseimage_url')
+
     dirty_member = ''.join(args).strip()
     sanitized_member = sanitize_possemember(dirty_member)
-    link = "http://funny.drewstud.com/"+sanitized_member+"/"+sanitized_member+"list.txt"
+    link = site_url+sanitized_member+"/"
+
     try:
         response = urllib.request.urlopen(link)
         data = response.read()
         text = data.decode('utf-8')
-        images=text.splitlines()
-        images = [x for x in images if x]
+        soup = BeautifulSoup(text, "html.parser")
+        images = soup.find_all('a', href=True)
     except urllib.error.HTTPError as e:
         if e.code==404:
             images=[]
@@ -39,7 +44,7 @@ def possepic(bot, event, *args):
     from random import randrange
     if len(images) > 0:
         random_index = randrange(0,len(images))
-        image_name = images[random_index]
+        image_name=soup.find_all('a', href=True)[random_index]['href']
         instanceImageUrl = "http://funny.drewstud.com/"+sanitized_member+"/"+image_name
         image_data = urllib.request.urlopen(instanceImageUrl)
         filename = os.path.basename(instanceImageUrl)
