@@ -31,7 +31,8 @@ def possequote(bot, event, *args):
     sanitized_command = sanitize_command(dirty_command)
     if sanitized_command == "add":
         try:
-            quote = ' '.join(args).strip()
+            quote = ' '.join(args).split()[1:]
+            quote = ' '.join(quote)
             f = open(possequote_path, "a+")
             logger.info("quote to add is : {}".format(quote))
             f.write(quote + "\r\n")
