@@ -13,12 +13,16 @@ logger = logging.getLogger(__name__)
 commands = ["add"]
 
 def sanitize_command(command):
-    return process.extractOne(command, commands)[0]
+    sanitized = process.extractOne(command, commands)
+    if sanitized[1] == 0:
+        sanitized = ''
+    else:
+        return sanitized[0]
 
 def _initialise(bot):
     plugins.register_user_command(["possequote"])
 
-def possepic(bot, event, *args):
+def possequote(bot, event, *args):
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     rel_path = "possequote.txt"
     possequote_path = os.path.join(script_dir, rel_path)
@@ -27,8 +31,9 @@ def possepic(bot, event, *args):
     sanitized_command = sanitize_command(dirty_command)
     if sanitized_command == "add":
         try:
-            quote = ''.join(args).split(' ')[4:]
+            quote = ' '.join(args).strip()
             f = open(possequote_path, "a+")
+            logger.info("quote to add is : {}".format(quote))
             f.write(quote + "\r\n")
             f.close()
             logger.info("quote '{}' has been added by {}".format(quote, event.user.full_name))
@@ -41,6 +46,12 @@ def possepic(bot, event, *args):
             yield from bot.coro_send_message(
                 event.conv.id_,
                 _("Error adding quote to archive").format(
+                    event.user.full_name, 'yay'))
+        except Exception as e:
+            logger.error('error with possequote: {}'.format(e))
+            yield from bot.coro_send_message(
+                event.conv.id_,
+                _("Something horrible has happened!!!!").format(
                     event.user.full_name, 'yay'))
     else:
         f = open(possequote_path, "r")
