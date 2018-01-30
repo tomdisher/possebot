@@ -37,6 +37,7 @@ def possepic(bot, event, *args):
         text = data.decode('utf-8')
         soup = BeautifulSoup(text, "html.parser")
         images = soup.find_all('a', href=True)
+        images = [x for x in images if x.text!='../']
     except urllib.error.HTTPError as e:
         if e.code == 404:
             images = []
@@ -48,7 +49,7 @@ def possepic(bot, event, *args):
     from random import randrange
     if len(images) > 0:
         random_index = randrange(0, len(images))
-        image_name = soup.find_all('a', href=True)[random_index]['href']
+        image_name = images[random_index]
         instanceImageUrl = "http://funny.drewstud.com/" +\
             sanitized_member+"/"+image_name
         image_data = urllib.request.urlopen(instanceImageUrl)
