@@ -31,8 +31,8 @@ class MonitorWordsTestCase(unittest.TestCase):
         self.fake_user = FakeUser()
         self.fake_event.user = self.fake_user
         
-    def test_merkle_found(self):
-        self.fake_event.user.full_name='merklepants'
+    def test_tom_bomb_found(self):
+
         bomb_message='💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩'
         message_found=False
         self.fake_event.text = 'tom bomb'
@@ -40,6 +40,13 @@ class MonitorWordsTestCase(unittest.TestCase):
             if(bomb_message == x):
                 message_found=True
         self.assertTrue(message_found)
-        
 
-    
+    def test_merkle_found(self):
+        message_found=False
+        self.fake_event.text='merkle'
+        self.fake_event.user.full_name='merklepants'
+        merkle_message="YOU SAID THE SECRET WORDDDDDD {}!!!".format(self.fake_event.user.full_name)
+        for x in monitorwords._got_a_message(self.fake_bot, self.fake_event, 'nocommand'):
+            if(merkle_message == x):
+                message_found=True
+        self.assertTrue(message_found)

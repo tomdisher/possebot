@@ -8,7 +8,7 @@ def _got_a_message(bot, event, command):
     if "merkle" in  event.text.lower():
         yield from bot.coro_send_message(
             event.conv,
-            _("YOU SAID THE SECRET WORDDDDDD!!!").format(
+            _("YOU SAID THE SECRET WORDDDDDD {}!!!").format(
                 event.user.full_name, 'yay'))
     elif event.text.lower() == "tom bomb":
          yield from bot.coro_send_message(
