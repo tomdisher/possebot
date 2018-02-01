@@ -20,7 +20,6 @@ def miller(bot, event, *args):
     use /bot forgetme to clear previous storage
     """
     question = ''.join(args).strip()
-    print(event.user.__dict__)
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     rel_path = "millerwords.yml"
     millerwords_path = os.path.join(script_dir, rel_path)
@@ -29,22 +28,19 @@ def miller(bot, event, *args):
             content = (yaml.load(stream))
         except yaml.YAMLError as exc:
             print(exc)
-    print(content)
     if "ferret" in question:
         words = content['ferret']
         word = random_word(words)
         yield from bot.coro_send_message(
             event.conv,
-            _(word).format(
-                event.user.full_name, 'yay'))
+            _(word))
 
     if "keilbasa" or "kielbasa" in question.lower():
         words = content['keilbasa']
         word = random_word(words)
         yield from bot.coro_send_message(
             event.conv,
-            _(word).format(
-                event.user.full_name, 'yay'))
+            _(word))
 
 
 def joey(bot, event, *args):
@@ -52,7 +48,6 @@ def joey(bot, event, *args):
     use /bot forgetme to clear previous storage
     """
     question = ''.join(args).strip()
-    print(event.user.__dict__)
     script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
     rel_path = "joeywords.yml"
     joeywords_path = os.path.join(script_dir, rel_path)
@@ -61,19 +56,16 @@ def joey(bot, event, *args):
             content = (yaml.load(stream))
         except yaml.YAMLError as exc:
             print(exc)
-    print(content)
     if "games" in question:
         words = content['games']
         word = random_word(words)
         yield from bot.coro_send_message(
             event.conv,
-            _(word).format(
-                event.user.full_name, 'yay'))
+            _(word))
 
     elif "wife" in question.lower() and "sister" in question.lower():
         words = content['sisterwife']
         word = random_word(words)
         yield from bot.coro_send_message(
             event.conv,
-            _(word).format(
-                event.user.full_name, 'yay'))
+            _(word))
