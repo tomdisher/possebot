@@ -95,12 +95,13 @@ class MonitorWordsTestCase(unittest.TestCase):
     @patch("builtins.open", new_callable=mock_open, read_data="data")
     def test_joeyboy_found(self, mock_open):
         self.fake_event.text='!joeyboy'
-        expected_message="Joeyboy loves things!"
+        expected_messages=["Joeyboy loves things!","Joeyboy eats veggies!"]
         mock_open.side_effect = [
+            mock.mock_open(read_data="Joeyboy eats veggies!").return_value,
             mock.mock_open(read_data="Joeyboy loves things!").return_value
         ]
         for x in monitorwords._got_a_message(self.fake_bot, self.fake_event, 'nocommand'):
-            if(expected_message in x):
+            if(x in expected_messages):
                self.message_found=True
         self.assertTrue(self.message_found)
     
