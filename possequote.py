@@ -39,20 +39,17 @@ def possequote(bot, event, *args):
             logger.info("quote '{}' has been added by {}".format(quote, event.user.full_name))
             yield from bot.coro_send_message(
                 event.conv,
-                _("'" + quote + "' has been to the posse archive").format(
-                    event.user.full_name, 'yay'))
+                _("'" + quote + "' has been to the posse archive"))
         except KeyError:
             logger.warning("Error adding posse '{}' to {}".format(quote, possequote_path))
             yield from bot.coro_send_message(
                 event.conv.id_,
-                _("Error adding quote to archive").format(
-                    event.user.full_name, 'yay'))
+                _("Error adding quote to archive"))
         except Exception as e:
             logger.error('error with possequote: {}'.format(e))
             yield from bot.coro_send_message(
                 event.conv.id_,
-                _("Something horrible has happened!!!!").format(
-                    event.user.full_name, 'yay'))
+                _("Something horrible has happened!!!!"))
     else:
         f = open(possequote_path, "r")
         quotes = f.read().splitlines()
@@ -65,5 +62,5 @@ def possequote(bot, event, *args):
         quote = quotes[random_index]
         yield from bot.coro_send_message(
             event.conv.id_,
-            _(quote).format(
-                event.user.full_name, 'yay'))
+            _(quote))
+
