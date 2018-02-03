@@ -68,7 +68,7 @@ def possepic(bot, event, *args):
             photo_id = yield from bot._client.upload_image(image_data,
                                                            filename=filename)
 
-        yield from bot.coro_send_message(event.conv.id_, legacy_segments,
+        yield from bot.coro_send_message(event.conv.id_, '',
                                          image_id=photo_id)
 
     else:
