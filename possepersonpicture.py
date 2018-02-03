@@ -49,7 +49,7 @@ def possepic(bot, event, *args):
     from random import randrange
     if len(images) > 0:
         random_index = randrange(0, len(images))
-        image_name = images[random_index]
+        image_name = images[random_index].text
         instanceImageUrl = "http://funny.drewstud.com/" +\
             sanitized_member+"/"+image_name
         image_data = urllib.request.urlopen(instanceImageUrl)
