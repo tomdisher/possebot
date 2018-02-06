@@ -36,9 +36,10 @@ class MonitorWordsTestCase(unittest.TestCase):
         
     def test_tom_bomb_found(self):
 
-        bomb_message='💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩'
+        bomb_message='Gary actually made the tom bomb. 💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩'
         self.fake_event.text = 'tom bomb'
         for x in  monitorwords._got_a_message(self.fake_bot, self.fake_event, 'nocommand'):
+            print(x)
             if(bomb_message == x):
                 self.message_found=True
         self.assertTrue(self.message_found)
