@@ -76,4 +76,18 @@ class MonitorWordsTestCase(unittest.TestCase):
         mock_urlopen.return_value = FakeData()
         result = possepersonpicture.get_image_list('http://test.com')
         self.assertEqual('test link', (result[0].text))
+
+    @patch('possepersonpicture.sanitize_possemember')
+    def test_dirty_member_url(self, mock_sanitize):
+        test_site='http://meekle.com/images/'
+        mock_sanitize.return_value='merklemeister'
+        mock_bot = MagicMock()
+        possepersonpicture.bot = mock_bot
+        mock_bot.get_config_option.return_value = test_site
+        result = possepersonpicture.get_member_url('merklemeister')
+        self.assertEqual(test_site+'merklemeister'+'/', result)
+        
+        
+        
+        
         

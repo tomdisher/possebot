@@ -42,12 +42,15 @@ def get_image_list(link):
     images = soup.find_all('a', href=True)
     images = [x for x in images if x.text!='../']
     return images
-    
-def possepic(bot, event, *args):
+
+def get_member_url(dirty_member):
     site_url = bot.get_config_option('posseimage_url')
-    dirty_member = ''.join(args).strip()
     sanitized_member = sanitize_possemember(dirty_member)
     link = site_url+sanitized_member+"/"
+    return link
+
+def possepic(bot, event, *args):
+    link = get_member_url(''.join(args).strip())
     images = get_image_list(link)
 
     if len(images) > 0:
