@@ -43,14 +43,14 @@ def get_image_list(link):
     images = [x for x in images if x.text!='../']
     return images
 
-def get_member_url(dirty_member):
+def get_member_url(bot,dirty_member):
     site_url = bot.get_config_option('posseimage_url')
     sanitized_member = sanitize_possemember(dirty_member)
     link = site_url+sanitized_member+"/"
     return link
 
 def possepic(bot, event, *args):
-    link = get_member_url(''.join(args).strip())
+    link = get_member_url(bot,''.join(args).strip())
     images = get_image_list(link)
 
     if len(images) > 0:
