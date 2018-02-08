@@ -79,12 +79,14 @@ class MonitorWordsTestCase(unittest.TestCase):
 
     @patch('possepersonpicture.sanitize_possemember')
     def test_dirty_member_url(self, mock_sanitize):
+        fake_bot = MagicMock()
         test_site='http://meekle.com/images/'
+        fake_bot.get_config_option.return_value=test_site
         mock_sanitize.return_value='merklemeister'
         mock_bot = MagicMock()
         possepersonpicture.bot = mock_bot
         mock_bot.get_config_option.return_value = test_site
-        result = possepersonpicture.get_member_url('merklemeister')
+        result = possepersonpicture.get_member_url(fake_bot,'merklemeister')
         self.assertEqual(test_site+'merklemeister'+'/', result)
         
         
