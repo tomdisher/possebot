@@ -11,7 +11,7 @@ import logging
 from bs4 import BeautifulSoup
 from fuzzywuzzy import process
 from random import randrange
-    
+
 logger = logging.getLogger(__name__)
 members = ["joey", "meekle", "toomie", "gary",
            "alex", "miller", "bizic", "drewski", "keener"]
@@ -24,13 +24,17 @@ def sanitize_possemember(person):
 def _initialise(bot):
     plugins.register_user_command(["possepic"])
 
+
 def get_url(link):
     try:
         response = urllib.request.urlopen(link)
     except urllib.error.HTTPError as e:
-        logger.error('Error getting {} in possepersonpicture. Exception is {}'.format(link, e))
+        module_name = 'possepersonpicture'
+        logger.error('Error getting {} in {}.  {}'.format(link,
+                                                          module_name, e))
         return ''
     return response
+
 
 def get_image_list(link):
     response = get_url(link)
@@ -40,17 +44,19 @@ def get_image_list(link):
     text = data.decode('utf-8')
     soup = BeautifulSoup(text, "html.parser")
     images = soup.find_all('a', href=True)
-    images = [x for x in images if x.text!='../']
+    images = [x for x in images if x.text != '../']
     return images
 
-def get_member_url(bot,dirty_member):
+
+def get_member_url(bot, dirty_member):
     site_url = bot.get_config_option('posseimage_url')
     sanitized_member = sanitize_possemember(dirty_member)
     link = site_url+sanitized_member+"/"
     return link
 
+
 def possepic(bot, event, *args):
-    link = get_member_url(bot,''.join(args).strip())
+    link = get_member_url(bot, ''.join(args).strip())
     images = get_image_list(link)
 
     if len(images) > 0:

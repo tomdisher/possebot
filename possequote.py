@@ -12,6 +12,7 @@ from fuzzywuzzy import process
 logger = logging.getLogger(__name__)
 commands = ["add"]
 
+
 def sanitize_command(command):
     sanitized = process.extractOne(command, commands)
     if sanitized[1] == 0:
@@ -19,11 +20,13 @@ def sanitize_command(command):
     else:
         return sanitized[0]
 
+
 def _initialise(bot):
     plugins.register_user_command(["possequote"])
 
+
 def possequote(bot, event, *args):
-    script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+    script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
     rel_path = "possequote.txt"
     possequote_path = os.path.join(script_dir, rel_path)
 
@@ -36,12 +39,14 @@ def possequote(bot, event, *args):
             logger.info("quote to add is : {}".format(quote))
             f.write(quote + "\r\n")
             f.close()
-            logger.info("quote '{}' has been added by {}".format(quote, event.user.full_name))
+            logger.info("quote '{}' has been added by {}".format(
+                quote, event.user.full_name))
             yield from bot.coro_send_message(
                 event.conv,
                 _("'" + quote + "' has been to the posse archive"))
         except KeyError:
-            logger.warning("Error adding posse '{}' to {}".format(quote, possequote_path))
+            logger.warning("Error adding posse '{}' to {}".format(
+                quote, possequote_path))
             yield from bot.coro_send_message(
                 event.conv.id_,
                 _("Error adding quote to archive"))
@@ -63,4 +68,3 @@ def possequote(bot, event, *args):
         yield from bot.coro_send_message(
             event.conv.id_,
             _(quote))
-
