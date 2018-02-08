@@ -19,7 +19,7 @@ def _got_a_message(bot, event, command):
     elif event.text.lower() == "tom bomb":
         yield from bot.coro_send_message(
             event.conv,
-            _('Gary actually made the tom bomb.{}'.format(
+            _('Gary actually made the tom bomb. {}'.format(
                 '💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩')))
     elif event.text.lower() == 'when palooza':
         yield from bot.coro_send_message(
