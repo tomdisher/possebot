@@ -3,6 +3,7 @@
 import plugins
 import os
 from random import *
+import emoji
 
 
 def _initialise(bot):
@@ -20,7 +21,9 @@ def _got_a_message(bot, event, command):
         yield from bot.coro_send_message(
             event.conv,
             _('Gary actually made the tom bomb. {}'.format(
-                '💩💩💩💩💩💩💩💩💩💩💩💩💩💩💩')))
+                emoji.emojize(':poop::poop::poop::poop::poop::poop:' +
+                              ':poop::poop::poop::poop::poop::poop:' +
+                              ':poop::poop::poop:', use_aliases=True))))
     elif event.text.lower() == 'when palooza':
         yield from bot.coro_send_message(
             event.conv,
