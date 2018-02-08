@@ -1,6 +1,6 @@
- fuzzywuzzy[speedup]
- hangups
- requests
- beautifulsoup4
-
+fuzzywuzzy[speedup]
+hangups
+requests
+beautifulsoup4
+PyYAML
 
