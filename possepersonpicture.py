@@ -30,6 +30,7 @@ def get_url(link):
         response = urllib.request.urlopen(link)
     except urllib.error.HTTPError as e:
         module_name = 'possepersonpicture'
+        logger.error(link)
         logger.error('Error getting {} in {}.  {}'.format(link,
                                                           module_name, e))
         return ''
