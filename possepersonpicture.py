@@ -62,7 +62,7 @@ def possepic(bot, event, *args):
 
     if len(images) > 0:
         random_index = randrange(0, len(images))
-        image_name = images[random_index].text
+        image_name = images[random_index]['href']
         instanceImageUrl = link+image_name
         image_data = get_url(instanceImageUrl)
         filename = os.path.basename(instanceImageUrl)
