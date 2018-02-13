@@ -18,6 +18,9 @@ members = ["joey", "meekle", "toomie", "gary",
 
 
 def sanitize_possemember(person):
+    if not person:
+        random_index =  randrange(0, len(members))
+        return members[random_index]
     return process.extractOne(person, members)[0]
 
 
