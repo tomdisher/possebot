@@ -59,7 +59,8 @@ def get_member_url(bot, dirty_member):
 
 
 def possepic(bot, event, *args):
-    link = get_member_url(bot, ''.join(args).strip())
+    dirty_member =  ''.join(args).strip()
+    link = get_member_url(bot, dirty_member)
     images = get_image_list(link)
 
     if len(images) > 0:
