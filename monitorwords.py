@@ -12,7 +12,7 @@ def _initialise(bot):
 
 
 def _got_a_message(bot, event, command):
-    if "merkle" in event.text.lower():
+    if "joeyfluff" in event.text.lower():
         yield from bot.coro_send_message(
             event.conv,
             _("YOU SAID THE SECRET WORDDDDDD {}!!!").format(
