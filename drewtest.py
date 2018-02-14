@@ -16,5 +16,5 @@ def drewski(bot, event, *args):
     print(event.user.__dict__)
     yield from bot.coro_send_message(
         event.conv,
-        _("Why hello there " + event.user.full_name).format(
+        _("Why hello there {}").format(
             event.user.full_name, 'yay'))
