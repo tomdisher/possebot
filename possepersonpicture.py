@@ -18,6 +18,9 @@ members = ["joey", "meekle", "toomie", "gary",
 
 
 def sanitize_possemember(person):
+    if not person:
+        random_index = randrange(0, len(members))
+        return members[random_index]
     return process.extractOne(person, members)[0]
 
 
@@ -30,6 +33,7 @@ def get_url(link):
         response = urllib.request.urlopen(link)
     except urllib.error.HTTPError as e:
         module_name = 'possepersonpicture'
+        logger.error(link)
         logger.error('Error getting {} in {}.  {}'.format(link,
                                                           module_name, e))
         return ''
@@ -56,12 +60,13 @@ def get_member_url(bot, dirty_member):
 
 
 def possepic(bot, event, *args):
-    link = get_member_url(bot, ''.join(args).strip())
+    dirty_member = ''.join(args).strip()
+    link = get_member_url(bot, dirty_member)
     images = get_image_list(link)
 
     if len(images) > 0:
         random_index = randrange(0, len(images))
-        image_name = images[random_index].text
+        image_name = images[random_index]['href']
         instanceImageUrl = link+image_name
         image_data = get_url(instanceImageUrl)
         filename = os.path.basename(instanceImageUrl)

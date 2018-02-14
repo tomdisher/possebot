@@ -75,7 +75,7 @@ class MonitorWordsTestCase(unittest.TestCase):
     def test_get_image_list(self, mock_urlopen):
         mock_urlopen.return_value = FakeData()
         result = possepersonpicture.get_image_list('http://test.com')
-        self.assertEqual('test link', (result[0].text))
+        self.assertEqual('http://test.com', (result[0]['href']))
 
     @patch('possepersonpicture.sanitize_possemember')
     def test_dirty_member_url(self, mock_sanitize):
