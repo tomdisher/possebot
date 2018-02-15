@@ -88,8 +88,13 @@ class MonitorWordsTestCase(unittest.TestCase):
         mock_bot.get_config_option.return_value = test_site
         result = possepersonpicture.get_member_url(fake_bot,'merklemeister')
         self.assertEqual(test_site+'merklemeister'+'/', result)
-        
-        
-        
-        
+    
+    def test_sanitize_posse_member_finds_member(self):
+        possepersonpicture.process.extractOne.return_value=['miller']
+        result = possepersonpicture.sanitize_possemember('millller')
+        self.assertEqual('miller', result)
+     
+    def test_sanitize_posse_member_finds_random_member(self):
+        result = possepersonpicture.sanitize_possemember('')
+        self.assertTrue(len(result)>1)
         
