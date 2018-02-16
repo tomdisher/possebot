@@ -82,9 +82,22 @@ def possepic(bot, event, *args):
             logger.warning('image plugin not loaded - using legacy code')
             photo_id = yield from bot._client.upload_image(image_data,
                                                            filename=filename)
+        except Exception as e:
+            message = "So sorry. Unable to upload image. Tell admins"
+            logger.error(e)
+            yield from bot.coro_send_message(
+                event.conv,
+                _(message))
 
-        yield from bot.coro_send_message(event.conv.id_, '',
-                                         image_id=photo_id)
+        try:
+            yield from bot.coro_send_message(event.conv.id_, '',
+                                             image_id=photo_id)
+        except Exception as e:
+            message = "So sorry. Unable to upload image. Tell admins"
+            logger.error(e)
+            yield from bot.coro_send_message(
+                event.conv,
+                _(message))
 
     else:
         yield from bot.coro_send_message(
