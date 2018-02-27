@@ -33,6 +33,7 @@ def get_url(link):
         response = urllib.request.urlopen(link)
     except urllib.error.HTTPError as e:
         module_name = 'possepersonpicture'
+        logger.error(link)
         logger.error('Error getting {} in {}.  {}'.format(link,
                                                           module_name, e))
         return ''
@@ -58,8 +59,13 @@ def get_member_url(bot, dirty_member):
     return link
 
 
-def is_finger_pic(dirty_member, image):
+def is_finger_pic(dirty_member, image, event):
     logger.info('image is {}'.format(image))
+    logger.info('requester is {}'.format(event.user.id_.chat_id))
+    if event.user.id_.chat_id == '105513849938447892432':
+        logger.info('no way joey')
+        return image
+
     if dirty_member == 'nick':
         show_pic = randint(1, 3)
         if show_pic == 2:
@@ -75,7 +81,7 @@ def possepic(bot, event, *args):
     if len(images) > 0:
         random_index = randrange(0, len(images))
         image_name = images[random_index]['href']
-        image_name = is_finger_pic(dirty_member, image_name)
+        image_name = is_finger_pic(dirty_member, image_name, event)
         instanceImageUrl = link+image_name
         image_data = get_url(instanceImageUrl)
         filename = os.path.basename(instanceImageUrl)
