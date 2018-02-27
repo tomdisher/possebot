@@ -10,7 +10,7 @@ import hangups
 import logging
 from bs4 import BeautifulSoup
 from fuzzywuzzy import process
-from random import randrange
+from random import randrange, randint
 
 logger = logging.getLogger(__name__)
 members = ["joey", "meekle", "toomie", "gary",
@@ -58,6 +58,15 @@ def get_member_url(bot, dirty_member):
     return link
 
 
+def is_finger_pic(dirty_member, image):
+    logger.info('image is {}'.format(image))
+    if dirty_member == 'nick':
+        show_pic = randint(1, 3)
+        if show_pic == 2:
+            return 'C37B7D43-0AA9-45E7-9732-148AFC08E6C8.jpeg'
+    return image
+
+
 def possepic(bot, event, *args):
     dirty_member = ''.join(args).strip()
     link = get_member_url(bot, dirty_member)
@@ -66,6 +75,7 @@ def possepic(bot, event, *args):
     if len(images) > 0:
         random_index = randrange(0, len(images))
         image_name = images[random_index]['href']
+        image_name = is_finger_pic(dirty_member, image_name)
         instanceImageUrl = link+image_name
         image_data = get_url(instanceImageUrl)
         filename = os.path.basename(instanceImageUrl)
