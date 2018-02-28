@@ -70,6 +70,11 @@ def is_finger_pic(dirty_member, image, event):
         show_pic = randint(1, 3)
         if show_pic == 2:
             return 'C37B7D43-0AA9-45E7-9732-148AFC08E6C8.jpeg'
+    if dirty_member == 'joeyboy':
+        show_pic = randint(1, 3)
+        if show_pic == 2:
+            return '2018-02-28.jpg'
+
     return image
 
 
