@@ -46,15 +46,27 @@ def _got_a_message(bot, event, command):
             _("Miller scarfs down %s kielbasa" % randint(1, 100)))
     elif "!joeyboy" in event.text.lower():
         # <-- absolute dir the script is in
-        script_dir = os.path.dirname(__file__)
-        rel_path = "joeyboy.txt"
-        joeyboywords_path = os.path.join(script_dir, rel_path)
-        words = open(joeyboywords_path, 'r')
-        words = words.read()
-        words = words.splitlines()
         from random import randrange
-        random_index = randrange(0, len(words))
-        random_word = words[random_index]
-        yield from bot.coro_send_message(
-            event.conv,
-            _(random_word))
+        random_index = randrange(0, 3)
+        if random_index == 2:
+            try:
+                site_url = bot.get_config_option('posseimage_url')
+                instanceImageUrl = site_url+'/joey/jodyboy.jpg'
+                photo_id = yield from bot.call_shared('image_upload_single',
+                                                      instanceImageUrl)
+                yield from bot.coro_send_message(event.conv.id_, '',
+                                                 image_id=photo_id)
+            except Exception as e:
+                logger.error(e)
+        else:
+            script_dir = os.path.dirname(__file__)
+            rel_path = "joeyboy.txt"
+            joeyboywords_path = os.path.join(script_dir, rel_path)
+            words = open(joeyboywords_path, 'r')
+            words = words.read()
+            words = words.splitlines()
+            random_index = randrange(0, len(words))
+            random_word = words[random_index]
+            yield from bot.coro_send_message(
+                event.conv,
+                _(random_word))
