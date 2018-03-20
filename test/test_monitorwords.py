@@ -16,6 +16,8 @@ import monitorwords
 class FakeBot:
     def coro_send_message(self,  fake_conv, message):
         yield message
+    def call_shared(self, image, name):
+        yield '1234'
     def get_config_option(self, item):
         return 'item'
 
