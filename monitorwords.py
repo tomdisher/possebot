@@ -6,6 +6,12 @@ from random import *
 import emoji
 
 
+def aoe_times():
+    play_times = ["8pm", "9pm", "10pm", "now"]
+    random_index = randrange(len(play_times)-1)
+    return play_times[random_index]
+
+
 def _initialise(bot):
     plugins.register_handler(_got_a_message, type="message",
                              priority=50)
@@ -28,6 +34,10 @@ def _got_a_message(bot, event, command):
         yield from bot.coro_send_message(
             event.conv,
             _('I believe it is Toomie\'s turn to pick'))
+    elif event.text.lower() == 'when aoe':
+        yield from bot.coro_send_message(
+            event.conv,
+            _(aoe_times()))
     elif event.text.lower() == 'where palooza':
         yield from bot.coro_send_message(
             event.conv,
