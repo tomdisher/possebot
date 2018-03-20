@@ -16,6 +16,8 @@ import monitorwords
 class FakeBot:
     def coro_send_message(self,  fake_conv, message):
         yield message
+    def get_config_option(self, item):
+        return 'item'
 
 class FakeUser:
     full_name=''
@@ -92,6 +94,15 @@ class MonitorWordsTestCase(unittest.TestCase):
             if(expected_message in x):
                self.message_found=True
         self.assertTrue(self.message_found)
+
+    def test_when_aoe(self):
+        self.fake_event.text='when aoe'
+        expected_messages = ["8pm", "9pm", "10pm", "now"]
+        for x in monitorwords._got_a_message(self.fake_bot, self.fake_event, 'nocommand'):
+            if(x in expected_messages):
+               self.message_found=True
+        self.assertTrue(self.message_found)
+
 
     @patch("builtins.open", new_callable=mock_open, read_data="data")
     def test_joeyboy_found(self, mock_open):
