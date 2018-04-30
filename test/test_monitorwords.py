@@ -59,7 +59,7 @@ class MonitorWordsTestCase(unittest.TestCase):
 
     def test_when_palooza_found(self):
         self.fake_event.text='when palooza'
-        expected_message='I believe it is Toomie\'s turn to pick'
+        expected_message='Toomie picked May 28!'
         for x in monitorwords._got_a_message(self.fake_bot, self.fake_event, 'nocommand'):
             if(expected_message == x):
                self.message_found=True

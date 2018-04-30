@@ -33,7 +33,7 @@ def _got_a_message(bot, event, command):
     elif event.text.lower() == 'when palooza':
         yield from bot.coro_send_message(
             event.conv,
-            _('I believe it is Toomie\'s turn to pick'))
+            _('Toomie picked May 28!'))
     elif event.text.lower() == 'when aoe':
         yield from bot.coro_send_message(
             event.conv,
