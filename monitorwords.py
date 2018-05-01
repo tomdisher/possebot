@@ -11,9 +11,11 @@ def get_nhl_scores():
     games = result['dates'][0]['games']
     for game in games:
         away = "{} {}\n".format(
-            game['teams']['away']['team']['name'], game['teams']['away']['score'])
+            game['teams']['away']['team']['name'],
+            game['teams']['away']['score'])
         home = "{} {}\n".format(
-            game['teams']['home']['team']['name'], game['teams']['home']['score'])
+            game['teams']['home']['team']['name'],
+            game['teams']['home']['score'])
         score = away+home
         return score
 
