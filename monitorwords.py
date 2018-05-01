@@ -1,9 +1,23 @@
-
-
+import requests
 import plugins
 import os
 from random import *
 import emoji
+
+
+def get_nhl_scores():
+    result = requests.get(
+        "https://statsapi.web.nhl.com/api/v1/schedule").json()
+    games = result['dates'][0]['games']
+    for game in games:
+        away = "{} {}\n".format(
+            game['teams']['away']['team']['name'],
+            game['teams']['away']['score'])
+        home = "{} {}\n".format(
+            game['teams']['home']['team']['name'],
+            game['teams']['home']['score'])
+        score = away+home
+        return score
 
 
 def aoe_times():
@@ -54,6 +68,13 @@ def _got_a_message(bot, event, command):
         yield from bot.coro_send_message(
             event.conv,
             _("Miller scarfs down %s kielbasa" % randint(1, 100)))
+    elif "!nhl" in event.text.lower():
+        action = event.text.lower().split('!nhl')[1]
+        if action.tolower() == 'scores':
+            text = get_nhl_scores()
+            yield from bot.coro_send_message(
+                event.conv,
+                _(text))
     elif "!joeyboy" in event.text.lower():
         # <-- absolute dir the script is in
         from random import randrange
