@@ -6,6 +6,7 @@ import emoji
 
 
 def get_nhl_scores():
+    all_games = ''
     result = requests.get(
         "https://statsapi.web.nhl.com/api/v1/schedule").json()
     games = result['dates'][0]['games']
@@ -17,7 +18,8 @@ def get_nhl_scores():
             game['teams']['home']['team']['name'],
             game['teams']['home']['score'])
         score = away+home
-        return score
+        all_games += score + '\n'
+    return all_games
 
 
 def aoe_times():
@@ -69,8 +71,8 @@ def _got_a_message(bot, event, command):
             event.conv,
             _("Miller scarfs down %s kielbasa" % randint(1, 100)))
     elif "!nhl" in event.text.lower():
-        action = event.text.lower().split('!nhl')[1]
-        if action.tolower() == 'scores':
+        action = event.text.lower().split('!nhl ')[1]
+        if action.lower() == 'scores':
             text = get_nhl_scores()
             yield from bot.coro_send_message(
                 event.conv,
