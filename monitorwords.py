@@ -170,7 +170,7 @@ def _got_a_message(bot, event, command):
                                                  image_id=photo_id)
             except Exception as e:
                 print(e)
-   
+
         else:
             script_dir = os.path.dirname(__file__)
             rel_path = "joeyboy.txt"
