@@ -5,7 +5,7 @@ from random import *
 import emoji
 import pprint
 import json
-from .nhlbot import *
+from nhlbot import *
 
 
 def format_stats(stats):
@@ -169,7 +169,8 @@ def _got_a_message(bot, event, command):
                 yield from bot.coro_send_message(event.conv.id_, '',
                                                  image_id=photo_id)
             except Exception as e:
-                logger.error(e)
+                print(e)
+   
         else:
             script_dir = os.path.dirname(__file__)
             rel_path = "joeyboy.txt"
