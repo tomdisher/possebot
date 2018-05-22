@@ -3,24 +3,67 @@ import plugins
 import os
 from random import *
 import emoji
+import pprint
+import json
+from .nhlbot import *
 
+def format_stats(stats):
+    output=''
+    for key,value in stats.items():
+        output += "{} : {}\n".format(str(key),str(value))
 
+    return output
+
+def get_meekle_stats():
+    os_dropped=randint(1,10)
+    shirts_off=randint(1,50)
+    seinfelds_watched=randint(1,2000)
+    spillzones=randint(1,500)
+    petite_redheads=randint(1,150)
+
+    result="""Os dropped: {}\n Shirts Off: {}
+Seinfelds Watched: {}\n Spillzones: {}
+Petite Redheads: {}\n""".format(os_dropped,
+                                shirts_off,
+                                seinfelds_watched,
+                                spillzones,
+                                petite_redheads)
+    return result
+def get_joeyboy_stats():
+    woman_wooed=randint(1, 10)
+    mountain_mommas=randint(1, 200)
+    sister_mommas=randint(1, 100)
+    thottsexckx=randint(1, 10)
+    result="""Women wooed: {}\n Mountain Mommas: {}
+SisterMommas: {}\n thottsexckx: {}\n""".format(
+                      woman_wooed,mountain_mommas,
+                      sister_mommas,
+                      thottsexckx)
+    return result
 def get_nhl_scores():
     all_games = ''
-    result = requests.get(
-        "https://statsapi.web.nhl.com/api/v1/schedule").json()
-    games = result['dates'][0]['games']
-    for game in games:
-        away = "{} {}\n".format(
-            game['teams']['away']['team']['name'],
-            game['teams']['away']['score'])
-        home = "{} {}\n".format(
-            game['teams']['home']['team']['name'],
-            game['teams']['home']['score'])
-        score = away+home
-        all_games += score + '\n'
+    try:
+        result = requests.get(
+            "https://statsapi.web.nhl.com/api/v1/schedule").json()
+        games = result['dates'][0]['games']
+        for game in games:
+            away = "{} {}\n".format(
+                game['teams']['away']['team']['name'],
+                game['teams']['away']['score'])
+            home = "{} {}\n".format(
+                game['teams']['home']['team']['name'],
+                game['teams']['home']['score'])
+            score = away+home
+            all_games += score + '\n'
+    except IndexError:
+        all_games = 'No games scheduled for today'
     return all_games
 
+
+def get_nhl_team_stats(name):
+    result = format_stats(get_team_stats(name)['stats'][0]['splits'][0]['stat'])
+    result += format_stats(get_team_stats(name)['stats'][1]['splits'][0]['stat'])
+    return result
 
 def aoe_times():
     play_times = ["8pm", "9pm", "10pm", "now"]
@@ -77,6 +120,33 @@ def _got_a_message(bot, event, command):
             yield from bot.coro_send_message(
                 event.conv,
                 _(text))
+        elif action.startswith('stats'):
+            try:
+                print(action)
+                team = action.split('stats ')[1]
+                print('Getting team {}'.format(team))
+                result = get_nhl_team_stats(team)
+                yield from bot.coro_send_message(
+                  event.conv,
+                  _(result))
+            except Exception as e:
+                print(e)
+                yield from bot.coro_send_message(
+                event.conv,
+                _('Please pass team name {}'.format(e)))
+    elif "!stats" in event.text.lower():
+        person = event.text.lower().split('!stats ')[1]
+        if person.lower() == 'joeyboy':
+            text = get_joeyboy_stats()
+            yield from bot.coro_send_message(
+                event.conv,
+                _(text))
+        if person.lower() == 'meekle':
+            text = get_meekle_stats()
+            yield from bot.coro_send_message(
+                event.conv,
+                _(text))
+
     elif "!joeyboy" in event.text.lower():
         # <-- absolute dir the script is in
         from random import randrange
