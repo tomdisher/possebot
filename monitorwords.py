@@ -7,21 +7,23 @@ import pprint
 import json
 from .nhlbot import *
 
+
 def format_stats(stats):
-    output=''
-    for key,value in stats.items():
-        output += "{} : {}\n".format(str(key),str(value))
+    output = ''
+    for key, value in stats.items():
+        output += "{} : {}\n".format(str(key), str(value))
 
     return output
 
-def get_meekle_stats():
-    os_dropped=randint(1,10)
-    shirts_off=randint(1,50)
-    seinfelds_watched=randint(1,2000)
-    spillzones=randint(1,500)
-    petite_redheads=randint(1,150)
 
-    result="""Os dropped: {}\n Shirts Off: {}
+def get_meekle_stats():
+    os_dropped = randint(1, 10)
+    shirts_off = randint(1, 50)
+    seinfelds_watched = randint(1, 2000)
+    spillzones = randint(1, 500)
+    petite_redheads = randint(1, 150)
+
+    result = """Os dropped: {}\n Shirts Off: {}
 Seinfelds Watched: {}\n Spillzones: {}
 Petite Redheads: {}\n""".format(os_dropped,
                                 shirts_off,
@@ -29,17 +31,21 @@ Petite Redheads: {}\n""".format(os_dropped,
                                 spillzones,
                                 petite_redheads)
     return result
+
+
 def get_joeyboy_stats():
-    woman_wooed=randint(1, 10)
-    mountain_mommas=randint(1, 200)
-    sister_mommas=randint(1, 100)
-    thottsexckx=randint(1, 10)
-    result="""Women wooed: {}\n Mountain Mommas: {}
+    woman_wooed = randint(1, 10)
+    mountain_mommas = randint(1, 200)
+    sister_mommas = randint(1, 100)
+    thottsexckx = randint(1, 10)
+    result = """Women wooed: {}\n Mountain Mommas: {}
 SisterMommas: {}\n thottsexckx: {}\n""".format(
-                      woman_wooed,mountain_mommas,
-                      sister_mommas,
-                      thottsexckx)
+        woman_wooed, mountain_mommas,
+        sister_mommas,
+        thottsexckx)
     return result
+
+
 def get_nhl_scores():
     all_games = ''
     try:
@@ -61,9 +67,12 @@ def get_nhl_scores():
 
 
 def get_nhl_team_stats(name):
-    result = format_stats(get_team_stats(name)['stats'][0]['splits'][0]['stat'])
-    result += format_stats(get_team_stats(name)['stats'][1]['splits'][0]['stat'])
+    result = format_stats(get_team_stats(
+        name)['stats'][0]['splits'][0]['stat'])
+    result += format_stats(get_team_stats(name)
+                           ['stats'][1]['splits'][0]['stat'])
     return result
+
 
 def aoe_times():
     play_times = ["8pm", "9pm", "10pm", "now"]
@@ -127,13 +136,13 @@ def _got_a_message(bot, event, command):
                 print('Getting team {}'.format(team))
                 result = get_nhl_team_stats(team)
                 yield from bot.coro_send_message(
-                  event.conv,
-                  _(result))
+                    event.conv,
+                    _(result))
             except Exception as e:
                 print(e)
                 yield from bot.coro_send_message(
-                event.conv,
-                _('Please pass team name {}'.format(e)))
+                    event.conv,
+                    _('Please pass team name {}'.format(e)))
     elif "!stats" in event.text.lower():
         person = event.text.lower().split('!stats ')[1]
         if person.lower() == 'joeyboy':
