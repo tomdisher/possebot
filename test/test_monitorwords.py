@@ -106,8 +106,10 @@ class MonitorWordsTestCase(unittest.TestCase):
         self.assertTrue(self.message_found)
 
 
+    @patch('random.randrange')
     @patch("builtins.open", new_callable=mock_open, read_data="data")
-    def test_joeyboy_found(self, mock_open):
+    def test_joeyboy_found(self, mock_open, mock_range):
+        mock_range.return_value=0
         self.fake_event.text='!joeyboy'
         expected_messages=["Joeyboy loves things!","Joeyboy eats veggies!"]
         mock_open.side_effect = [
