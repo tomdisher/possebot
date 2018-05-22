@@ -157,7 +157,6 @@ def _got_a_message(bot, event, command):
                 _(text))
 
     elif "!joeyboy" in event.text.lower():
-        # <-- absolute dir the script is in
         from random import randrange
         random_index = randrange(0, 3)
         if random_index == 2:
