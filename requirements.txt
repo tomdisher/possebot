@@ -1,6 +1,6 @@
 fuzzywuzzy==0.17.0
 hangups==0.4.9
-requests==2.21.0
+requests==2.22.0
 beautifulsoup4==4.7.1
 PyYAML==5.1  
 pycodestyle
