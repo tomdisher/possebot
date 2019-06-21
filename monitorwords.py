@@ -5,7 +5,7 @@ from random import *
 import emoji
 import pprint
 import json
-from nhlbot import *
+from plugins.__nhlbot import *
 
 
 def format_stats(stats):
@@ -19,7 +19,7 @@ def format_stats(stats):
 def get_meekle_stats():
     os_dropped = randint(1, 10)
     shirts_off = randint(1, 50)
-    seinfelds_watched = randint(1, 2000)
+    seinfelds_watched = 0
     spillzones = randint(1, 500)
     petite_redheads = randint(1, 150)
 
@@ -125,7 +125,8 @@ def _got_a_message(bot, event, command):
     elif "!nhl" in event.text.lower():
         action = event.text.lower().split('!nhl ')[1]
         if action.lower() == 'scores':
-            text = get_nhl_scores()
+            #text = get_nhl_scores()
+            text = get_scores()
             yield from bot.coro_send_message(
                 event.conv,
                 _(text))
@@ -182,3 +183,4 @@ def _got_a_message(bot, event, command):
             yield from bot.coro_send_message(
                 event.conv,
                 _(random_word))
+
