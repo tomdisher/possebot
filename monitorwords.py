@@ -85,6 +85,8 @@ def get_nhl_team_stats(name):
 def url_preview(urls):
     result = []
     for url in urls:
+        if 'youtube' in url:
+            break
         try:
             title, description, image = web_preview(url)
             result.append(f"{title}\n{description}\n")
