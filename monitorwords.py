@@ -8,6 +8,7 @@ import json
 from plugins.__nhlbot import *
 import re
 from webpreview import web_preview
+from bs4 import BeautifulSoup
 
 """
 the web url matching regex used by markdown
@@ -82,16 +83,42 @@ def get_nhl_team_stats(name):
                            ['stats'][1]['splits'][0]['stat'])
     return result
 
+def parse_twitter(url):
+    try:
+        if 'mobile.twitter.com' in url: 
+            result = requests.get(url, allow_redirects=True)
+            if 'Redirecting you to' in result.text:
+                url = re.findall('Redirecting you to (.*)<\/BODY>',result.text)[0]
+            else:
+                result = requests.get(url)
+                soup = BeautifulSoup(result.text, 'html.parser')
+                description = soup.body.find_all('div',{"class":"tweet-text"})[0].div.contents[0].strip()
+                return f"Twitter\n{description}"
+        else:
+            title, description, image = web_preview(url)
+            return f"Twitter\n{description}"
+    except Exception as ex:
+        print(ex)
+
 def url_preview(urls):
     result = []
     for url in urls:
-        if 'youtube' in url:
-            break
         try:
-            title, description, image = web_preview(url)
-            result.append(f"{title}\n{description}\n")
-        except:
-            print(f"unable to parse {url}")
+            if 'youtube' in url:
+                break
+            elif 'googleusercontent.com' in url:
+                break
+            elif 'twitter.com' in url:
+               result = parse_twitter(url)
+               result.append(result)
+            else:
+                headers = {'User-Agent': 'Mozilla/5.0'}
+                title, description, image = web_preview(url,headers=headers)
+                if not title or not description:
+                    return []
+                result.append(f"{title}\n{description}\n")
+        except Exception as ex:
+            print(f"unable to parse {url} {ex}")
     return result
 
 def aoe_times():
@@ -106,13 +133,13 @@ def _initialise(bot):
 
 
 def _got_a_message(bot, event, command):
-    result = re.findall(URL_REGEX,event.text.lower())
+    result = re.findall(URL_REGEX,event.text)
     if len(result)>0:
         message = url_preview(result)
         if len(message)>0:
             yield from bot.coro_send_message (
 	        event.conv,
-                _(" ".join(str(x) for x in message)))
+                _("".join(str(x) for x in message)))
     if "joeyfluff" in event.text.lower():
         yield from bot.coro_send_message(
             event.conv,
@@ -210,4 +237,6 @@ def _got_a_message(bot, event, command):
             yield from bot.coro_send_message(
                 event.conv,
                 _(random_word))
+
+
 
