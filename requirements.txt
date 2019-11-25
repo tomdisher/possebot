@@ -4,6 +4,6 @@ requests==2.22.0
 beautifulsoup4==4.8.1
 PyYAML==5.1.1  
 pycodestyle
-emoji==0.5.2 
+emoji==0.5.4 
 sports.py==2.0.9
 webpreview==1.6.0
