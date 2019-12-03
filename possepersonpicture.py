@@ -4,6 +4,8 @@ plugin to return random meekle image
 
 import plugins
 import urllib.request
+from urllib.request import Request
+from urllib.request import urlopen
 import os
 import base64
 import hangups
