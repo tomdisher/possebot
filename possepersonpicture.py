@@ -30,14 +30,16 @@ def _initialise(bot):
 
 def get_url(link):
     try:
-        response = urllib.request.urlopen(link)
+        headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.3'}
+        response = Request(link, headers=headers)
     except urllib.error.HTTPError as e:
         module_name = 'possepersonpicture'
         logger.error(link)
         logger.error('Error getting {} in {}.  {}'.format(link,
                                                           module_name, e))
         return ''
-    return response
+    return urlopen(response)
+
 
 
 def get_image_list(link):
