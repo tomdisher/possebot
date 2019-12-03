@@ -2,7 +2,7 @@ fuzzywuzzy==0.17.0
 hangups==0.4.10
 requests==2.22.0
 beautifulsoup4==4.8.1
-PyYAML==5.1.1  
+PyYAML==5.2  
 pycodestyle
 emoji==0.5.4 
 sports.py==2.0.9
