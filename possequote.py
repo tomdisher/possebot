@@ -7,10 +7,14 @@ import os
 import logging
 import hangups
 import plugins
+import requests
+import json
+from requests.auth import HTTPBasicAuth
 from fuzzywuzzy import process
 
 logger = logging.getLogger(__name__)
 commands = ["add"]
+_internal = {}
 
 
 def sanitize_command(command):
@@ -21,50 +25,49 @@ def sanitize_command(command):
         return sanitized[0]
 
 
+def get_auth():
+    return HTTPBasicAuth(_internal['posseapi_user'], _internal['posseapi_pass'])
+
+
 def _initialise(bot):
     plugins.register_user_command(["possequote"])
+    api_user = bot.get_config_option('posseapi_user')
+    api_pass = bot.get_config_option('posseapi_pass')
+    api_url = bot.get_config_option('posseapi_url')
+    if api_user:
+        _internal['posseapi_user'] = api_user
+    if api_pass:
+        _internal['posseapi_pass'] = api_pass
+    if api_url:
+        _internal['posseapi_url'] = api_url
 
 
 def possequote(bot, event, *args):
-    script_dir = os.path.dirname(__file__)  # <-- absolute dir the script is in
-    rel_path = "possequote.txt"
-    possequote_path = os.path.join(script_dir, rel_path)
-
     dirty_command = ''.join(args).strip().lower()
     sanitized_command = sanitize_command(dirty_command)
+    auth = get_auth()
+    api_url = _internal['posseapi_url']
+    api_url = api_url+'/possequote'
     if sanitized_command == "add":
         try:
             quote = ' '.join(args).partition(" ")[2]
-            f = open(possequote_path, "a+")
             logger.info("quote to add is : {}".format(quote))
-            f.write(quote + "\r\n")
-            f.close()
+            payload = {'quote': quote}
+            requests.post(api_url, auth=auth, data=json.dumps(payload))
+            logger.info("payload is '{}'".format(payload))
             logger.info("quote '{}' has been added by {}".format(
                 quote, event.user.full_name))
             yield from bot.coro_send_message(
                 event.conv,
                 _("'" + quote + "' has been to the posse archive"))
-        except KeyError:
-            logger.warning("Error adding posse '{}' to {}".format(
-                quote, possequote_path))
-            yield from bot.coro_send_message(
-                event.conv.id_,
-                _("Error adding quote to archive"))
         except Exception as e:
             logger.error('error with possequote: {}'.format(e))
             yield from bot.coro_send_message(
                 event.conv.id_,
                 _("Something horrible has happened!!!!"))
     else:
-        f = open(possequote_path, "r")
-        quotes = f.read().splitlines()
-        f.close()
-
-        quotes = [x for x in quotes if x]
-
-        from random import randrange
-        random_index = randrange(0, len(quotes))
-        quote = quotes[random_index]
+        quote = requests.get(api_url)
+        quote = quote.json()[1]
         yield from bot.coro_send_message(
             event.conv.id_,
             _(quote))
