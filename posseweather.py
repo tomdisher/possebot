@@ -7,10 +7,9 @@ import plugins
 import requests
 import json
 import emoji
-import geopandas
 import geopy
 from datetime import datetime, timezone
-from geopy.geocoders import Nominatim
+from geopy.geocoders import Bing
 
 api_key=''
 _internal = {}
@@ -19,19 +18,23 @@ openweather_base_url='https://api.openweathermap.org/data/2.5/'
 
 def _initialise(bot):
     api_key = bot.get_config_option('openweathermap_apikey')
+    geocode_key = bot.get_config_option('geocode_key')
     if api_key:
         _internal['openweathermap_apikey'] = api_key
+    if geocode_key:
+        _internal['geocode_key'] = geocode_key
     plugins.register_user_command(["wz"])
     plugins.register_user_command(["forecast"])
-
+   
 def get_lat_long(location):
-    locator = Nominatim(user_agent="myGeocoder")
+    locator = Bing(_internal['geocode_key'])
     location = locator.geocode(location)
     coordinates = {}
     if location != None:
         coordinates['latitude'] = location.latitude
         coordinates['longitude'] = location.longitude
     return coordinates
+
 
 def get_forecast(location, country='us'):
     url = f"https://api.weather.gov/points/{location['latitude']},{location['longitude']}"
