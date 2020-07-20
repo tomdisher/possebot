@@ -7,3 +7,4 @@ pycodestyle
 emoji==0.5.4 
 sports.py==2.0.9
 webpreview==1.6.0
+geopy==2.0.0

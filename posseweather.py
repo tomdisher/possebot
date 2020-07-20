@@ -44,7 +44,7 @@ def get_forecast(location, country='us'):
     forecast = requests.get(forecast_url).json()
     print(f"forecast is: {forecast}")
     forecast_string = ''
-    for day in forecast['properties']['periods'][: -4]:
+    for day in forecast['properties']['periods'][: 3]:
         temperature = day['temperature']
         forecast_date = day['name']
         description = day['shortForecast']
