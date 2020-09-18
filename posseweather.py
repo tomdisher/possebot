@@ -44,7 +44,7 @@ def get_forecast(location, country='us'):
     forecast = requests.get(forecast_url).json()
     print(f"forecast is: {forecast}")
     forecast_string = ''
-    for day in forecast['properties']['periods'][: -4]:
+    for day in forecast['properties']['periods'][: 3]:
         temperature = day['temperature']
         forecast_date = day['name']
         description = day['shortForecast']
@@ -90,8 +90,12 @@ def forecast(bot, event, *args):
 def emoji_weather_icon(description):
     if 'clear' in description:
         return emoji.emojize(':sun:')
-    elif 'mostly sunny' in description:
+    elif 'sunny' in description:
+        return emoji.emojize(':sun:')
+    elif 'mostly cloudy' in description:
         return emoji.emojize(':sun_behind_large_cloud:')
+    elif 'mostly sunny' in description:
+        return emoji.emojize(':sun_behind_small_cloud:')
     elif 'scattered clouds' in description:
         return emoji.emojize(':sun_behind_small_cloud:')
     elif 'few clouds' in description:
@@ -108,5 +112,6 @@ def emoji_weather_icon(description):
         return emoji.emojize(':cloud_with_lightning:')
     elif 'snow' in description:
         return emoji.emojize(':cloud_with_snow:')
+
 
 
