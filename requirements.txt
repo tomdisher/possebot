@@ -1,5 +1,5 @@
 fuzzywuzzy==0.18.0
-hangups==0.4.12
+hangups==0.4.18
 requests==2.25.1
 beautifulsoup4==4.9.3
 PyYAML==5.4  
